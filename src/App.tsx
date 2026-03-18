@@ -1,18 +1,19 @@
 import './App.css'
-import {Todolist} from "./components/Todolist.tsx";
+import {TodolistItem} from "./components/TodolistItem.tsx";
 import {useState} from "react";
+import {v1} from "uuid";
+import {FilterTypes} from "./types/Types.ts";
 
-export type FilterTypes = "all" | "active" | "completed"
 
 export const App = () => {
       //data
       const todoListTitle_1: string = "What to learn";
 
       const [tasks, setTasks] = useState ([
-        { id: 1, taskName: "CSS", isComplete: true },
-        { id: 2, taskName: "HTML", isComplete: true },
-        { id: 3, taskName: "React", isComplete: false },
-        { id: 4, taskName: "Redux", isComplete: false },
+        { id: v1(), taskName: "CSS", isComplete: true },
+        { id: v1(), taskName: "HTML", isComplete: true },
+        { id: v1(), taskName: "React", isComplete: false },
+        { id: v1(), taskName: "Redux", isComplete: false },
       ])
       //
 
@@ -30,18 +31,25 @@ export const App = () => {
             filteredTasks = tasks.filter(task => task.isComplete);
       }
 
-    const deleteTask = (taskID: number) => {
+    const deleteTask = (taskID: string) => {
         const filteredTasks = tasks.filter((task) => task.id !== taskID);
         setTasks(filteredTasks);
     }
 
+    const createTask = (taskName: string) => {
+          const newTask = {id: v1(), taskName, isComplete: false};
+          const newTasks = [newTask, ...tasks];
+          setTasks(newTasks)
+    }
+
   return (
       <div className="app">
-        <Todolist title={todoListTitle_1}
-                  tasks={filteredTasks}
-                  date="04.03.2026"
-                  deleteTask = {deleteTask}
-                  changeFilter = {changeFilter}  />
+        <TodolistItem title={todoListTitle_1}
+                      tasks={filteredTasks}
+                      date="04.03.2026"
+                      deleteTask = {deleteTask}
+                      changeFilter = {changeFilter}
+                      createTask = {createTask}/>
       </div>
   )
 }
