@@ -8,11 +8,14 @@ export type TodolistProps = {
     deleteTask: (taskID: string) => void;
     changeFilter: (filter: FilterTypes) => void;
     createTask: (taskName: string) => void;
+    changeTaskStatus: (taskID: string, isDone: boolean) => void;
+    filter: FilterTypes;
 }
 
 export type TasksListProps = {
     tasks: TasksProps[]
     deleteTask: (taskID: string) => void;
+    changeTaskStatus: (taskID: string, isDone: boolean) => void;
 }
 
 export type TasksProps = {

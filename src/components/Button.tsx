@@ -1,12 +1,13 @@
 
 type BtnProps = {
-    text: string
+    text: string;
     onClick?: () => void;
+    className?: string;
 }
 
-export const Button = ({text, onClick}: BtnProps) => {
+export const Button = ({text, onClick, className}: BtnProps) => {
     return (
-        <button onClick={onClick}>
+        <button onClick={onClick} className={className}>
             {text}
         </button>
     );

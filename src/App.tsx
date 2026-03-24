@@ -2,7 +2,7 @@ import './App.css'
 import {TodolistItem} from "./components/TodolistItem.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
-import {FilterTypes} from "./types/Types.ts";
+import {FilterTypes, TasksProps} from "./types/Types.ts";
 
 
 export const App = () => {
@@ -37,10 +37,15 @@ export const App = () => {
     }
 
     const createTask = (taskName: string) => {
-          const newTask = {id: v1(), taskName, isComplete: false};
-          const newTasks = [newTask, ...tasks];
-          setTasks(newTasks)
+        const newTask = {id: v1(), taskName, isComplete: false};
+        const newTasks = [newTask, ...tasks];
+        setTasks(newTasks)
     }
+
+      const changeTaskStatus = (taskId: TasksProps["id"], isDone: TasksProps["isComplete"]) => {
+            const newState = tasks.map(task => (task.id === taskId) ? ({...task, isComplete: isDone}) : task)
+            setTasks(newState);
+      }
 
   return (
       <div className="app">
@@ -49,7 +54,10 @@ export const App = () => {
                       date="04.03.2026"
                       deleteTask = {deleteTask}
                       changeFilter = {changeFilter}
-                      createTask = {createTask}/>
+                      createTask = {createTask}
+                      changeTaskStatus = {changeTaskStatus}
+                      filter = {filter}
+        />
       </div>
   )
 }
