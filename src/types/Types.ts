@@ -1,25 +1,31 @@
 
 export type FilterTypes = "all" | "active" | "completed"
 
-export type TodolistProps = {
+export type TodoListType = {
+    id: string
     title: string
-    date?: string
-    tasks: TasksProps[]
-    deleteTask: (taskID: string) => void;
-    changeFilter: (filter: FilterTypes) => void;
-    createTask: (taskName: string) => void;
-    changeTaskStatus: (taskID: string, isDone: boolean) => void;
+    tasks?: TasksProps[]
+    deleteTask?: (taskID: string, todolistID: TodoListType["id"]) => void;
+    changeFilter?: (filter: FilterTypes, todolistID: TodoListType["id"]) => void;
+    createTask?: (taskName: string, todolistID: TodoListType["id"]) => void;
+    changeTaskStatus?: (taskID: string, isDone: boolean, todolistID: TodoListType["id"]) => void;
     filter: FilterTypes;
+    deleteTodolist?: (todolistID: TodoListType["id"]) => void;
 }
 
 export type TasksListProps = {
+    todoListID: TodoListType["id"]
     tasks: TasksProps[]
-    deleteTask: (taskID: string) => void;
-    changeTaskStatus: (taskID: string, isDone: boolean) => void;
+    deleteTask: (taskID: string, todolistID: TodoListType["id"]) => void;
+    changeTaskStatus: (taskID: string, isDone: boolean, todolistID: TodoListType["id"]) => void;
 }
 
 export type TasksProps = {
     id: string
     taskName: string
     isComplete: boolean
+}
+
+export type TasksStateType = {
+    [todolistId: string]: TasksProps[]
 }
