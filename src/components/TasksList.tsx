@@ -1,8 +1,9 @@
 import {TasksListProps} from "../types/Types.ts";
 import {Button} from "./Button.tsx";
 import {ChangeEvent} from "react";
+import {EditableSpan} from "./EditableSpan.tsx";
 
-export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID}: TasksListProps) => {
+export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID, changeTaskTitle}: TasksListProps) => {
 
     {
         if (tasks.length === 0) {
@@ -10,6 +11,9 @@ export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID}: Tas
         }
     }
 
+    const changeTaskTitleHandler = (title: string, taskId: string) => {
+            changeTaskTitle(todoListID, taskId, title)
+    }
 
     return (
         <ul>
@@ -18,13 +22,14 @@ export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID}: Tas
                     const newTaskStatus = e.currentTarget.checked;
                     changeTaskStatus(task.id, newTaskStatus, todoListID);
                 }
+
                 return (
                     <li key={task.id} className={task.isComplete ? "is-done" : ""}>
                         <input type="checkbox"
                                key={task.id}
                                checked={task.isComplete}
                                onChange={changeTaskStatusHandler}/>
-                        <span>{task.taskName}</span>
+                        <EditableSpan value={task.taskName} onChange={(title) => changeTaskTitleHandler(title, task.id)}/>
                         <Button text="x" onClick={() => deleteTask(task.id, todoListID)}/>
                     </li>
                 )
