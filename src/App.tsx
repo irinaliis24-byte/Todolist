@@ -5,6 +5,13 @@ import {v1} from "uuid";
 import {FilterTypes, TasksProps, TasksStateType, TodoList, TodoListType} from "./types/Types.ts";
 import {getFilteredTasks} from "./utilits/Utilits.ts";
 import {CreateItemForm} from "./components/CreateItemForm.tsx";
+import {ButtonAppBar} from "./components/ButtonAppBar.tsx";
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import {gridContainerSx} from "./styles/Todolist.styles.ts";
+import {createTheme, ThemeProvider} from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
 
 export const App = () => {
@@ -61,7 +68,10 @@ export const App = () => {
     }
 
     const changeTaskTitle = (todolistId: TasksProps["id"], taskId: TasksProps["taskName"], taskName: string) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].map((task) => task.id === taskId ? {...task, taskName} : task)});
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map((task) => task.id === taskId ? {...task, taskName} : task)
+        });
     }
 
 
@@ -91,29 +101,57 @@ export const App = () => {
         setTodoLists(todoLists.map((todolist) => todolist.id === todolistId ? {...todolist, title} : todolist))
     }
 
+
+    type ThemeMode = 'dark' | 'light'
+
+    const [themeMode, setThemeMode] = useState<ThemeMode>('light');
+
+    const theme = createTheme({
+        palette: {
+            mode: themeMode,
+            primary: {
+                main: '#087EA4',
+            },
+        },})
+
+    const changeMode = () => {
+        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    }
+
     const todolistsComponent = todoLists.map((tl) => {
         return (
-            <TodolistItem key={tl.id}
-                          id={tl.id}
-                          title={tl.title}
-                          tasks={getFilteredTasks(tasks[tl.id], tl.filter)}
-                          deleteTask={deleteTask}
-                          changeFilter={changeTodolistFilter}
-                          createTask={createTask}
-                          changeTaskStatus={changeTaskStatus}
-                          filter={tl.filter}
-                          deleteTodolist={deleteTodolist}
-                          changeTaskTitle={changeTaskTitle}
-                          changeTodolistTitle={changeTodolistTitle}
-            />
+            <Grid key={tl.id}>
+                <Paper elevation={4} sx={{p: "20px"}}>
+                    <TodolistItem id={tl.id}
+                                  title={tl.title}
+                                  tasks={getFilteredTasks(tasks[tl.id], tl.filter)}
+                                  deleteTask={deleteTask}
+                                  changeFilter={changeTodolistFilter}
+                                  createTask={createTask}
+                                  changeTaskStatus={changeTaskStatus}
+                                  filter={tl.filter}
+                                  deleteTodolist={deleteTodolist}
+                                  changeTaskTitle={changeTaskTitle}
+                                  changeTodolistTitle={changeTodolistTitle}
+                    />
+                </Paper>
+            </Grid>
         )
     });
 
     return (
-        <div className="app">
-            <CreateItemForm createTitle={createTodolist}/>
-            {todolistsComponent}
-        </div>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container className="app" fixed maxWidth="xl">
+                <ButtonAppBar onChangeMode={changeMode}/>
+                <Grid container sx={gridContainerSx}>
+                    <CreateItemForm createTitle={createTodolist}/>
+                </Grid>
+                <Grid container spacing={10}>
+                    {todolistsComponent}
+                </Grid>
+            </Container>
+        </ThemeProvider>
     )
 }
 

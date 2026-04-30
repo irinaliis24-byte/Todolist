@@ -1,5 +1,8 @@
-import {Button} from "./Button.tsx";
+// import {Button} from "./Button.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import IconButton from "@mui/material/IconButton";
+import TextField from '@mui/material/TextField';
 
 type ItemProps = {
     createTitle: (title: string) => void;
@@ -7,10 +10,10 @@ type ItemProps = {
 
 export const CreateItemForm = (props: ItemProps) => {
     const [itemTitle, setItemTitle] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const setItemTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false);
+        error && setError(null);
         setItemTitle(event.currentTarget.value)
     }
 
@@ -20,7 +23,7 @@ export const CreateItemForm = (props: ItemProps) => {
             props.createTitle(trimmedItemTitle);
             setItemTitle("");
         } else {
-            setError(true);
+            setError("Title cannot be empty");
         }
     }
 
@@ -28,12 +31,16 @@ export const CreateItemForm = (props: ItemProps) => {
 
 
     return (
-        <div>
-            <input value={itemTitle} onChange={setItemTitleHandler}
-                   onKeyDown={createItemOnEnterHandler}
-                   className={error ? "error" : ""}/>
-            <Button text="+" onClick={createTitleHandler}/>
-            {error && <div className="error-message">{error}</div>}
+        <div className="createItemForm">
+            <TextField id="outlined-basic" label={error ? error : "Title"} variant="outlined"
+                       size="small"
+                       value={itemTitle} onChange={setItemTitleHandler}
+                       onKeyDown={createItemOnEnterHandler}
+                       error={!!error}
+                        onBlur={()=>setError(null)}/>
+            <IconButton onClick={createTitleHandler} aria-label="create" size="large" >
+                <AddBoxIcon fontSize="inherit" color="primary" />
+            </IconButton>
         </div>
     );
 };

@@ -1,10 +1,7 @@
-.app {
-  padding: 30px;
-  display: flex;
-}
-
-.app > div {
-  margin-right: 50px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .error {
@@ -19,6 +16,9 @@
   background-color: lightgreen;
 }
 
-.is-done {
-  opacity: 0.5;
+
+.createItemForm {
+  display: flex;
+  align-items: center;
+  max-height: 55px;
 }

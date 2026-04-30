@@ -1,7 +1,14 @@
 import {TasksListProps} from "../types/Types.ts";
-import {Button} from "./Button.tsx";
 import {ChangeEvent} from "react";
 import {EditableSpan} from "./EditableSpan.tsx";
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
+import Checkbox from '@mui/material/Checkbox';
+import List from "@mui/material/List";
+import {ListItem} from "@mui/material";
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemButton from '@mui/material/ListItemButton';
+import {getListItemSx} from "../styles/Todolist.styles.ts";
 
 export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID, changeTaskTitle}: TasksListProps) => {
 
@@ -16,7 +23,7 @@ export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID, chan
     }
 
     return (
-        <ul>
+        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {tasks.map(task => {
                 const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                     const newTaskStatus = e.currentTarget.checked;
@@ -24,16 +31,33 @@ export const TasksList = ({tasks, deleteTask, changeTaskStatus, todoListID, chan
                 }
 
                 return (
-                    <li key={task.id} className={task.isComplete ? "is-done" : ""}>
-                        <input type="checkbox"
-                               key={task.id}
-                               checked={task.isComplete}
-                               onChange={changeTaskStatusHandler}/>
-                        <EditableSpan value={task.taskName} onChange={(title) => changeTaskTitleHandler(title, task.id)}/>
-                        <Button text="x" onClick={() => deleteTask(task.id, todoListID)}/>
-                    </li>
-                )
+                    <ListItem
+                        key={task.id}
+                        secondaryAction={
+                            <IconButton onClick={() => deleteTask(task.id, todoListID)} aria-label="delete" size="small">
+                                <ClearIcon fontSize="inherit"/>
+                            </IconButton>
+                        }
+                        disablePadding
+                    >
+                        <ListItemButton role={undefined} dense>
+                            <ListItemIcon>
+                                <Checkbox
+                                    edge="start"
+                                    checked={task.isComplete}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    onChange={changeTaskStatusHandler}
+                                />
+                            </ListItemIcon>
+                            <EditableSpan sx={getListItemSx(task.isComplete)}
+                                          value={task.taskName}
+                                          onChange={(title) => changeTaskTitleHandler(title, task.id)}/>
+                        </ListItemButton>
+                    </ListItem>
+                );
             })}
-        </ul>
+        </List>
     );
+
 };
