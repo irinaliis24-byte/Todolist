@@ -17,7 +17,7 @@ The app allows users to organize their tasks in a visual way using **lists and c
 * **React**
 * **TypeScript**
 * **Vite**
-* **SCSS**
+* **Material UI**
 
 ### Purpose of the Project
 
