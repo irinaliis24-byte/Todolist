@@ -1,30 +1,27 @@
-import {TasksProps, TasksStateType, TodoListType} from "../types/Types.ts";
+import {TasksProps, TasksStateType, TodoListType} from "@/common/types/Types.ts";
 import {createTodolistAC, deleteTodolistAC} from "./todolists-reducer.ts";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
 
 const initialState: TasksStateType = {}
 
-type CreateTaskAT = {
-    taskName: TasksProps["taskName"]
-    todolistID: TodoListType["id"]
-}
 
 export const deleteTaskAC = createAction<{
-    taskID: TasksProps["id"],
-    todolistID: TodoListType["id"]
+    taskID: TasksProps['id'],
+    todolistID: TodoListType['id']
 }>('tasks/deleteTask')
-export const createTaskAC = createAction('tasks/createTask', ({taskName, todolistID}: CreateTaskAT) => {
-    return {payload: {taskName, todolistID, taskID: nanoid()}}
-});
+export const createTaskAC = createAction<{
+    taskName: TasksProps['taskName'],
+    todolistID: TodoListType['id']
+}>('tasks/createTask')
 export const changeTaskStatusAC = createAction<{
-    taskID: TasksProps["id"],
-    isDone: TasksProps["isComplete"],
-    todolistID: TodoListType["id"]
+    taskID: TasksProps['id'],
+    isDone: TasksProps['isComplete'],
+    todolistID: TodoListType['id']
 }>('tasks/changeTaskStatus')
 export const changeTaskTitleAC = createAction<{
-    taskID: TasksProps["id"],
-    taskName: TasksProps["taskName"],
-    todolistID: TodoListType["id"]
+    taskID: TasksProps['id'],
+    taskName: TasksProps['taskName'],
+    todolistID: TodoListType['id']
 }>('tasks/changeTaskTitle')
 
 
@@ -42,7 +39,7 @@ export const tasksReducer = createReducer(initialState, (builder) => {
         })
         .addCase(createTaskAC, (state, action) => {
             const newTask: TasksProps = {
-                id: action.payload.taskID,
+                id: nanoid(),
                 taskName: action.payload.taskName,
                 isComplete: false
             }

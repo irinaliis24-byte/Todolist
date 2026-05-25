@@ -1,18 +1,18 @@
-import {FilterTypes, TodoList} from "../types/Types.ts";
+import {FilterTypes, TodoListType} from "@/common/types/Types.ts";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
 
-const initialState: TodoList[] = [];
+const initialState: TodoListType[] = [];
 
 export const deleteTodolistAC = createAction<{ id: string }>('todolists/deleteTodolist')
 export const changeTodolistTitleAC = createAction<{
-    id: TodoList["id"],
+    id: TodoListType["id"],
     title: string
 }>('todolists/changeTodolistTitle')
 export const changeTodolistFilterAC = createAction<{
     filter: FilterTypes,
-    id: TodoList["id"]
+    id: TodoListType["id"]
 }>('todolists/changeTodolistFilter')
-export const createTodolistAC = createAction('todolists/createTodolist', (title: TodoList["title"]) => {
+export const createTodolistAC = createAction('todolists/createTodolist', (title: TodoListType["title"]) => {
     return {payload: {title, id: nanoid()}}
 })
 
@@ -32,7 +32,7 @@ export const todolistsReducer = createReducer(initialState, (builder) => {
             if (todolist) todolist.filter = action.payload.filter
         })
         .addCase(createTodolistAC, (draft, action) => {
-            const newTodolist: TodoList = {id: action.payload.id, title: action.payload.title, filter: "all"}
+            const newTodolist: TodoListType = {id: action.payload.id, title: action.payload.title, filter: "all"}
             draft.push(newTodolist)
         })
 })

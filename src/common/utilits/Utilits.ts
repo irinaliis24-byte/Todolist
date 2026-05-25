@@ -1,4 +1,4 @@
-import {FilterTypes, TasksProps} from "../types/Types.ts";
+import {FilterTypes, TasksProps} from "@/common/types/Types.ts";
 
 export const getFilteredTasks = (tasks: TasksProps[], filter: FilterTypes): TasksProps[] => {
     switch (filter) {

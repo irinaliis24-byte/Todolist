@@ -1,18 +1,18 @@
 import {beforeEach, expect, test} from 'vitest'
-import type {TodoList} from "../types/Types.ts";
+import type {TodoListType} from "@/common/types/Types.ts";
 import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     createTodolistAC,
     deleteTodolistAC,
     todolistsReducer
-} from './todolists-reducer'
+} from '../todolists-reducer.ts'
 import {nanoid} from "@reduxjs/toolkit";
 
 
 let todolistId1: string;
 let todolistId2: string;
-let startState: TodoList[] = [];
+let startState: TodoListType[] = [];
 
 beforeEach(() => {
     todolistId1 = nanoid()

@@ -1,8 +1,8 @@
-// import {Button} from "./Button.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IconButton from "@mui/material/IconButton";
 import TextField from '@mui/material/TextField';
+import styles from '@/common/components/CreateItemForm/CreateItemForm.module.css'
 
 type ItemProps = {
     createTitle: (title: string) => void;
@@ -31,7 +31,7 @@ export const CreateItemForm = (props: ItemProps) => {
 
 
     return (
-        <div className="createItemForm">
+        <div className={styles.createItemForm}>
             <TextField id="outlined-basic" label={error ? error : "Title"} variant="outlined"
                        size="small"
                        value={itemTitle} onChange={setItemTitleHandler}

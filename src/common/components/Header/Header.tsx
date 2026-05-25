@@ -4,16 +4,24 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {NavButton} from "../styles/NavButton.ts";
-import {useTheme} from "@mui/material";
+import {NavButton} from "@/common/styles/NavButton.ts";
 import Switch from '@mui/material/Switch'
+import {useAppSelector} from "../../hooks/useAppSelector.ts";
+import {selectThemeMode} from '@/app/app-selectors.ts';
+import {useAppDispatch} from "../../hooks/useAppDispatch.ts";
+import {getTheme} from "../../theme/theme.ts";
+import {changeThemeModeAC} from '@/app/app-reducer.ts';
 
-type Props = {
-    onChangeMode: () => void
-}
 
-export function ButtonAppBar({onChangeMode}: Props) {
-    const theme = useTheme();
+export function Header() {
+    const themeMode = useAppSelector(selectThemeMode)
+    const dispatch = useAppDispatch();
+    const theme = getTheme(themeMode);
+
+    const changeMode = () => {
+        dispatch(changeThemeModeAC({themeMode: themeMode === 'light' ? 'dark' : 'light'}));
+    }
+
     return (
         <Box sx={{ flexGrow: 1, paddingBottom: "80px" }}>
             <AppBar position="fixed" >
@@ -30,7 +38,7 @@ export function ButtonAppBar({onChangeMode}: Props) {
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} align="center">
                         Todolists
                     </Typography>
-                    <Switch color={"default"} onChange={onChangeMode}/>
+                    <Switch color={"default"} onChange={changeMode}/>
                     <NavButton color="inherit" background={theme.palette.primary.light}>FAQ</NavButton>
                     <NavButton color="inherit">Sign In</NavButton>
                     <NavButton color="inherit">Sign Up</NavButton>
