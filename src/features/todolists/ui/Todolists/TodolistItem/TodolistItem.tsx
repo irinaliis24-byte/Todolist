@@ -1,29 +1,27 @@
-import {TodoListType} from '@/common/types/Types.ts';
-import {TasksList} from './TasksList/TasksList.tsx';
-import {CreateItemForm} from '@/common/components/CreateItemForm/CreateItemForm.tsx';
-import {createTaskAC} from '@/features/todolists/model/tasks-reduser.ts';
-import {useAppDispatch} from '@/common/hooks/useAppDispatch.ts';
-import {TodolistTitle} from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx';
-import {FilterButtons} from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx';
+import { TasksList } from "./TasksList/TasksList.tsx"
+import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm.tsx"
+import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx"
+import { FilterButtons } from "@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx"
+import { DomainTodolist } from "@/common/types"
+import { useAddTaskMutation } from "@/features/todolists/api/tasksApi.ts"
 
 type Props = {
-    todolist: TodoListType;
+  todolist: DomainTodolist
 }
 
-export const TodolistItem = ({todolist}: Props) => {
+export const TodolistItem = ({ todolist }: Props) => {
+  const [addTask] = useAddTaskMutation()
 
-    const dispatch = useAppDispatch();
+  const createTaskHandler = (title: string) => {
+    addTask({ todolistId: todolist.id, title })
+  }
 
-    const createTaskHandler = (title: TodoListType["title"]) => {
-        dispatch(createTaskAC({taskName: title, todolistID: todolist.id}))
-    }
-
-    return (
-        <>
-            <TodolistTitle todolist={todolist} />
-            <FilterButtons todolist={todolist} />
-            <CreateItemForm createTitle={createTaskHandler}/>
-            <TasksList todolist={todolist} />
-        </>
-    );
-};
+  return (
+    <div>
+      <TodolistTitle todolist={todolist} />
+      <FilterButtons todolist={todolist} />
+      <CreateItemForm createTitle={createTaskHandler} />
+      <TasksList todolist={todolist} />
+    </div>
+  )
+}

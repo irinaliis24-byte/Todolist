@@ -4,17 +4,17 @@ export const gridContainerSx: SxProps = {
     m: "24px 0",
 }
 
+export const containerSx: SxProps = {
+    display: "flex",
+    justifyContent: "space-between",
+    mb: "16px"
+}
+
 export const headerBoxSx: SxProps = {
 display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     mb: "20px"
-}
-
-export const filterButtonBoxSx: SxProps = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    mb: "16px"
 }
 
 export const getListItemSx = (isDone: boolean): SxProps => ({
